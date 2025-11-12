@@ -68,4 +68,22 @@
                 (with-@@ b
                   @^:foo)))))
 
+(ert-deftest @-delete ()
+  "Tests the key :delete method."
+  (should-error
+   (let ((foo (@extend :foo 1)))
+     (@! foo :delete :foo)
+     (@ foo :foo)))
+  (should
+   (eq :foo
+       (let* ((quux (@extend :foo :foo))
+	      (bar (@extend quux :foo 1)))
+	 (@! bar :delete :foo)
+	 (@ bar :foo))))
+  (should
+   (equal '(:foo :proto)
+	  (let* ((foo (@extend :foo :foo :bar :bar)))
+	    (@! foo :delete :bar)
+	    (@! foo :keys)))))
+
 ;;; @-tests.el ends here

@@ -208,6 +208,14 @@ If :default, don't produce an error but return the provided value."
   "Return a list of the keys directly on @@."
   (cl-loop for (key _) on (aref @@ 1) by #'cddr collect key))
 
+(def@ @ :delete (to-delete)
+  (let ((new nil))
+    (cl-loop for (key val) on (aref @@ 1) by #'cddr
+	     do (unless (eq key to-delete)
+		  (push val new)
+		  (push key new)))
+    (setf (aref @@ 1) new)))
+		    
 ;; Top-level Object Management
 
 (defun @--list-all ()
