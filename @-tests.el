@@ -84,6 +84,12 @@
    (equal '(:foo :proto)
 	  (let* ((foo (@extend :foo :foo :bar :bar)))
 	    (@! foo :delete :bar)
-	    (@! foo :keys)))))
+	    (@! foo :keys))))
+  ;; ensure we don't actually delete the :proto key
+  (should
+   (equal '(:proto nil :foo :foo)
+	  (let* ((foo (@extend :foo :foo)))
+	    (@! foo :delete :proto)
+	    (aref foo 1)))))
 
 ;;; @-tests.el ends here
